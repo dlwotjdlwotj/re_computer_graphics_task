@@ -30,3 +30,19 @@
 *.exe
 *.out
 *.app
+
+# Visual Studio
+.vs/
+*.vcxproj.user
+*.suo
+*.user
+
+# 빌드된 파일
+Debug/
+Release/
+x64/
+x86/
+
+# 운영체제 파일
+Thumbs.db
+.DS_Store
