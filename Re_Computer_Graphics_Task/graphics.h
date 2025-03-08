@@ -8,8 +8,10 @@
 extern GLuint program;
 extern GLuint triangleVB;
 extern GLuint vertexArrayID;
+extern GLuint indexID;
 
 void setVertex() {
+	// vertex buffer 설정
 	float v[] = { -0.7 , -0.7 , 0 ,
 		0.7, -0.7 , 0 ,
 		0 , 0.7 , 0 };
@@ -23,4 +25,10 @@ void setVertex() {
 	glBindBuffer(GL_ARRAY_BUFFER, triangleVB);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
+	// index buffer 설정
+	unsigned int indices[3] = { 0, 1, 2 };
+	glGenBuffers(1, &indexID);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexID);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * 3, indices, GL_STATIC_DRAW);
 }
