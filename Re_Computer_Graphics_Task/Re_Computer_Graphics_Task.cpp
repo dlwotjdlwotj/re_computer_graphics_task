@@ -34,6 +34,9 @@ void render(GLFWwindow* window) {
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	glUseProgram(program);
+
+	resize();
+
 	glBindVertexArray(vertexArrayID);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexID);
 	glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);

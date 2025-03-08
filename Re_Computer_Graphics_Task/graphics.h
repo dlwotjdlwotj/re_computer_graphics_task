@@ -3,7 +3,10 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <glm/gtc/type_ptr.hpp>
 #include "shader.h"
+
+using namespace glm;
 
 extern GLuint program;
 extern GLuint triangleVB;
@@ -34,4 +37,13 @@ void setVertex() {
 	glGenBuffers(1, &indexID);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexID);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * 9, indices, GL_STATIC_DRAW);
+}
+
+void resize() {
+	mat3 scaleMat(0.5, 0, 0,
+		0, 0.5, 0,
+		0, 0, 1);
+
+	GLuint loc = glGetUniformLocation(program, "transform");
+	glUniformMatrix3fv(loc, 1, 0, value_ptr(scaleMat));
 }
