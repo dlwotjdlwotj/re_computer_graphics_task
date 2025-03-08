@@ -1,6 +1,8 @@
-﻿#define GLEW_STATIC
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+﻿#include "graphics.h"
+
+GLuint program = 0;
+GLuint triangleVB = 0;
+GLuint vertexArrayID = 0;
 
 void render(GLFWwindow* window);
 
@@ -10,6 +12,10 @@ int main(void) {
 	GLFWwindow* window = glfwCreateWindow(800, 600, "Hello", NULL, NULL);
 	glfwMakeContextCurrent(window);
 	glewInit();
+
+	program = loadShaders("shader.vert", "shader.frag");
+
+	setVertex();
 
 	while (!glfwWindowShouldClose(window)) {
 		render(window);
@@ -25,6 +31,10 @@ void render(GLFWwindow* window) {
 	glViewport(0, 0, width, height);
 	glClearColor(0, 0, .5, 0);
 	glClear(GL_COLOR_BUFFER_BIT);
+
+	glUseProgram(program);
+	glBindVertexArray(vertexArrayID);
+	glDrawArrays(GL_TRIANGLES, 0, 3);
 
 	glfwSwapBuffers(window);
 }
