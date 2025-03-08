@@ -13,6 +13,8 @@ extern GLuint triangleVB;
 extern GLuint vertexArrayID;
 extern GLuint indexID;
 
+extern float transformAngle;
+
 void setVertex() {
 	// vertex buffer 설정
 	float v[] = { 0 , 0.7 , 0 , // 가운데가 빈 삼각형을 위한 vertex 6개
@@ -46,4 +48,30 @@ void resize() {
 
 	GLuint loc = glGetUniformLocation(program, "transform");
 	glUniformMatrix3fv(loc, 1, 0, value_ptr(scaleMat));
+}
+
+void rotate() {
+	transformAngle += 0.05f;
+	mat3 rotMat(cos(transformAngle), sin(transformAngle), 0,
+		-sin(transformAngle), cos(transformAngle), 0,
+		0, 0, 1);
+
+	GLuint loc = glGetUniformLocation(program, "transform");
+	glUniformMatrix3fv(loc, 1, 0, glm::value_ptr(rotMat));
+}
+
+void transform() {
+	mat3 scaleMat(0.5, 0, 0,
+		0, 0.5, 0,
+		0, 0, 1);
+
+	transformAngle += 0.05f;
+	mat3 rotMat(cos(transformAngle), sin(transformAngle), 0,
+		-sin(transformAngle), cos(transformAngle), 0,
+		0, 0, 1);
+
+	mat3 finalMat = scaleMat * rotMat;
+	
+	GLuint loc = glGetUniformLocation(program, "transform");
+	glUniformMatrix3fv(loc, 1, 0, glm::value_ptr(finalMat));
 }
