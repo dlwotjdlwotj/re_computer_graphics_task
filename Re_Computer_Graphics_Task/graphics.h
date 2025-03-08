@@ -12,12 +12,15 @@ extern GLuint indexID;
 
 void setVertex() {
 	// vertex buffer 설정
-	float v[] = { -0.7 , -0.7 , 0 ,
-		0.7, -0.7 , 0 ,
-		0 , 0.7 , 0 };
+	float v[] = { 0 , 0.7 , 0 , // 가운데가 빈 삼각형을 위한 vertex 6개
+		-0.35 , 0 , 0 ,
+		0.35 , 0 , 0 ,
+		-0.7 , -0.7 , 0 ,
+		0 , -0.7 , 0 ,
+		0.7 , -0.7 , 0 };
 	glGenBuffers(1, &triangleVB); // vertex buffer 생성
 	glBindBuffer(GL_ARRAY_BUFFER, triangleVB); 
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 9, v, GL_STATIC_DRAW); // trianbleVB에 데이터 복사
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 18, v, GL_STATIC_DRAW); // trianbleVB에 데이터 복사
 
 	glGenVertexArrays(1, &vertexArrayID);
 	glBindVertexArray(vertexArrayID);
@@ -27,8 +30,8 @@ void setVertex() {
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
 	// index buffer 설정
-	unsigned int indices[3] = { 0, 1, 2 };
+	unsigned int indices[9] = { 0, 1, 2 , 1, 3, 4 , 2, 4, 5 };
 	glGenBuffers(1, &indexID);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexID);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * 3, indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * 9, indices, GL_STATIC_DRAW);
 }

@@ -36,7 +36,7 @@ void render(GLFWwindow* window) {
 	glUseProgram(program);
 	glBindVertexArray(vertexArrayID);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexID);
-	glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
 
 	glfwSwapBuffers(window);
 }
