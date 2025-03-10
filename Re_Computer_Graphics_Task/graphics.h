@@ -44,6 +44,8 @@ void setVertex() {
 }
 
 void setJ3AVertex() {
+	loadJ3A("C:/program1/Re_Computer_Graphics_Task/Re_Computer_Graphics_Task/banana.j3a");
+
 	glGenBuffers(1, &triangleVB);
 	glBindBuffer(GL_ARRAY_BUFFER, triangleVB);
 	glBufferData(GL_ARRAY_BUFFER, nVertices[0] * sizeof(vec3), vertices[0], GL_STATIC_DRAW);

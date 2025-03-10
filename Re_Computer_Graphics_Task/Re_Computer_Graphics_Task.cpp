@@ -16,8 +16,6 @@ int main(void) {
 	glfwMakeContextCurrent(window);
 	glewInit();
 
-	loadJ3A("C:/program1/Re_Computer_Graphics_Task/Re_Computer_Graphics_Task/banana.j3a");
-
 	program = loadShaders("shader.vert", "shader.frag");
 
 	setJ3AVertex();
