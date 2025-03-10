@@ -25,6 +25,9 @@ extern float phi;
 extern float theta;
 extern float fov;
 
+extern double lastX;
+extern double lastY;
+
 void setVertex() {
 	// vertex buffer 설정
 	float v[] = { 0 , 0.7 , 0 , // 가운데가 빈 삼각형을 위한 vertex 6개
@@ -128,4 +131,27 @@ void setCameraPosition(int width, int height) {
 	mat4 projMat = perspective(fov, aspect, 0.01f, 100.0f);
 	GLuint projMatLocation = glGetUniformLocation(program, "projMat");
 	glUniformMatrix4fv(projMatLocation, 1, GL_FALSE, &projMat[0][0]);
+}
+
+void mouseButtonCB(GLFWwindow* window, int button, int action, int mods) { //클릭 확인
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+		glfwGetCursorPos(window, &lastX, &lastY);
+	}
+}
+
+void cursorPosCB(GLFWwindow* window, double xpos, double ypos) { // 커서 움직임 확인
+	int width, height;
+	glfwGetWindowSize(window, &width, &height);
+
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+		theta -= (xpos - lastX) / width * 3.141592;
+		phi -= (ypos - lastY) / height * 3.141592;
+		lastX = xpos;
+		lastY = ypos;
+	}
+}
+
+void getMouseInput(GLFWwindow* window) {
+	glfwSetMouseButtonCallback(window, mouseButtonCB);
+	glfwSetCursorPosCallback(window, cursorPosCB);
 }

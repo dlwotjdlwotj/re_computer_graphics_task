@@ -13,6 +13,9 @@ float phi = 0;
 float theta = 0;
 float fov = 1.04719755;
 
+double lastX = 0;
+double lastY = 0;
+
 void render(GLFWwindow* window);
 
 int main(void) {
@@ -22,6 +25,8 @@ int main(void) {
 	glfwMakeContextCurrent(window);
 	glewInit();
 	glfwSwapInterval(1); // 속도 조절
+
+	getMouseInput(window); // 마우스 입력
 
 	program = loadShaders("shader.vert", "shader.frag");
 
