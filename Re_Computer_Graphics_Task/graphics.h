@@ -16,6 +16,7 @@ extern GLuint program;
 extern GLuint triangleVB;
 extern GLuint vertexArrayID;
 extern GLuint indexID;
+extern GLuint normalVB;
 
 extern float transformAngle;
 extern float rotationAngle;
@@ -71,6 +72,14 @@ void setJ3AVertex() {
 	glGenBuffers(1, &indexID);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexID);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, nTriangles[0] * sizeof(u32vec3), triangles[0], GL_STATIC_DRAW);
+}
+
+void setNormalVertex() {
+	glGenBuffers(1, &normalVB);
+	glBindBuffer(GL_ARRAY_BUFFER, normalVB);
+	glBufferData(GL_ARRAY_BUFFER, nVertices[0] * sizeof(vec3), normals[0], GL_STATIC_DRAW);
+	glEnableVertexAttribArray(2); // normal = 2
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);
 }
 
 void resize() {
@@ -151,7 +160,18 @@ void cursorPosCB(GLFWwindow* window, double xpos, double ypos) { // 커서 움직임 
 	}
 }
 
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
+	fov -= yoffset * 0.005;
+	if (fov > 3.141592 - 0.01) {
+		fov = 3.141592 - 0.01;
+	}
+	if (fov < 0.01) {
+		fov = 0.01;
+	}
+}
+
 void getMouseInput(GLFWwindow* window) {
 	glfwSetMouseButtonCallback(window, mouseButtonCB);
 	glfwSetCursorPosCallback(window, cursorPosCB);
+	glfwSetScrollCallback(window, scroll_callback);
 }

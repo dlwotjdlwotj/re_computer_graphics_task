@@ -4,6 +4,7 @@ GLuint program = 0;
 GLuint triangleVB = 0;
 GLuint vertexArrayID = 0;
 GLuint indexID = 0;
+GLuint normalVB = 0;
 
 float transformAngle = 0.0f;
 float rotationAngle = 0.0f;
@@ -31,6 +32,7 @@ int main(void) {
 	program = loadShaders("shader.vert", "shader.frag");
 
 	setJ3AVertex();
+	setNormalVertex();
 
 	while (!glfwWindowShouldClose(window)) {
 		render(window);
