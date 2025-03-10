@@ -8,6 +8,11 @@ GLuint indexID = 0;
 float transformAngle = 0.0f;
 float rotationAngle = 0.0f;
 
+float cameraDistance = 4;
+float phi = 0;
+float theta = 0;
+float fov = 1.04719755;
+
 void render(GLFWwindow* window);
 
 int main(void) {
@@ -39,7 +44,7 @@ void render(GLFWwindow* window) {
 
 	glUseProgram(program);
 
-	rotateObject();
+	setCameraPosition(width, height);
 
 	glBindVertexArray(vertexArrayID);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexID);

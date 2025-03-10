@@ -20,6 +20,11 @@ extern GLuint indexID;
 extern float transformAngle;
 extern float rotationAngle;
 
+extern float cameraDistance;
+extern float phi;
+extern float theta;
+extern float fov;
+
 void setVertex() {
 	// vertex buffer 설정
 	float v[] = { 0 , 0.7 , 0 , // 가운데가 빈 삼각형을 위한 vertex 6개
@@ -105,4 +110,22 @@ void rotateObject() {
 	mat4 rotationMat = rotate(rotationAngle, vec3(0.0f, 1.0f, 0.0f));
 	GLuint modelMatLocation = glGetUniformLocation(program, "modelMat");
 	glUniformMatrix4fv(modelMatLocation, 1, GL_FALSE, &rotationMat[0][0]);
+}
+
+void setCameraPosition(int width, int height) {
+	vec4 cameraPosHom = vec4(0, 0, cameraDistance, 0); // 카메라 거리
+	cameraPosHom = rotate(mat4(1.0f), theta, vec3(0, 1, 0)) * cameraPosHom; // y축 회전
+	cameraPosHom = rotate(mat4(1.0f), phi, vec3(1, 0, 0)) * cameraPosHom; // x축 회전
+	vec3 cameraPos = vec3(cameraPosHom);
+
+	// view space
+	mat4 viewMat = lookAt(cameraPos, vec3(0.0f), vec3(0, 1, 0));
+	GLuint viewMatLocation = glGetUniformLocation(program, "viewMat");;
+	glUniformMatrix4fv(viewMatLocation, 1, GL_FALSE, &viewMat[0][0]);
+
+	// projection
+	float aspect = (float) width / (float) height;
+	mat4 projMat = perspective(fov, aspect, 0.01f, 100.0f);
+	GLuint projMatLocation = glGetUniformLocation(program, "projMat");
+	glUniformMatrix4fv(projMatLocation, 1, GL_FALSE, &projMat[0][0]);
 }
