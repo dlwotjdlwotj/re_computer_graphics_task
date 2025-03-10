@@ -15,11 +15,12 @@ int main(void) {
 	GLFWwindow* window = glfwCreateWindow(800, 600, "Hello", NULL, NULL);
 	glfwMakeContextCurrent(window);
 	glewInit();
-	glfwSwapInterval(1); // buffer swap 주기 설정(회전 속도 조절 목적)
+
+	loadJ3A("C:/program1/Re_Computer_Graphics_Task/Re_Computer_Graphics_Task/banana.j3a");
 
 	program = loadShaders("shader.vert", "shader.frag");
 
-	setVertex();
+	setJ3AVertex();
 
 	while (!glfwWindowShouldClose(window)) {
 		render(window);
@@ -38,11 +39,9 @@ void render(GLFWwindow* window) {
 
 	glUseProgram(program);
 
-	transform();
-
 	glBindVertexArray(vertexArrayID);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexID);
-	glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, nTriangles[0] * 3, GL_UNSIGNED_INT, 0);
 
 	glfwSwapBuffers(window);
 }

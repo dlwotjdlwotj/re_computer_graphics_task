@@ -130,10 +130,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="j3a.cpp" />
     <ClCompile Include="Re_Computer_Graphics_Task.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphics.h" />
+    <ClInclude Include="shader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

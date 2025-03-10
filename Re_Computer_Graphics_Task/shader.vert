@@ -13,6 +13,5 @@ void transformByMatrix(){
 void main(void)
 {
 	p2 = in_Position.xy;
-	transformByMatrix();
 	gl_Position= vec4(p2, 0, 1);
 }
