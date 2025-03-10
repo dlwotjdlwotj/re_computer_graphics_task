@@ -34,6 +34,8 @@ int main(void) {
 	setJ3AVertex();
 	setNormalVertex();
 
+	glEnable(GL_DEPTH_TEST); // depth test
+
 	while (!glfwWindowShouldClose(window)) {
 		render(window);
 		glfwPollEvents();
@@ -48,6 +50,7 @@ void render(GLFWwindow* window) {
 	glViewport(0, 0, width, height);
 	glClearColor(0, 0, .5, 0);
 	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glUseProgram(program);
 
