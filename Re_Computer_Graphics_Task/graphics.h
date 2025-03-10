@@ -5,6 +5,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/transform.hpp>
 #include "shader.h"
 #include "j3a.hpp"
 
@@ -16,6 +18,7 @@ extern GLuint vertexArrayID;
 extern GLuint indexID;
 
 extern float transformAngle;
+extern float rotationAngle;
 
 void setVertex() {
 	// vertex buffer ¼³Á¤
@@ -95,4 +98,11 @@ void transform() {
 	
 	GLuint loc = glGetUniformLocation(program, "transform");
 	glUniformMatrix3fv(loc, 1, 0, glm::value_ptr(finalMat));
+}
+
+void rotateObject() {
+	rotationAngle += 0.01f;
+	mat4 rotationMat = rotate(rotationAngle, vec3(0.0f, 1.0f, 0.0f));
+	GLuint modelMatLocation = glGetUniformLocation(program, "modelMat");
+	glUniformMatrix4fv(modelMatLocation, 1, GL_FALSE, &rotationMat[0][0]);
 }

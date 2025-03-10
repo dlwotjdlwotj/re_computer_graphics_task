@@ -6,6 +6,7 @@ GLuint vertexArrayID = 0;
 GLuint indexID = 0;
 
 float transformAngle = 0.0f;
+float rotationAngle = 0.0f;
 
 void render(GLFWwindow* window);
 
@@ -15,6 +16,7 @@ int main(void) {
 	GLFWwindow* window = glfwCreateWindow(800, 600, "Hello", NULL, NULL);
 	glfwMakeContextCurrent(window);
 	glewInit();
+	glfwSwapInterval(1); // 속도 조절
 
 	program = loadShaders("shader.vert", "shader.frag");
 
@@ -36,6 +38,8 @@ void render(GLFWwindow* window) {
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	glUseProgram(program);
+
+	rotateObject();
 
 	glBindVertexArray(vertexArrayID);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexID);
