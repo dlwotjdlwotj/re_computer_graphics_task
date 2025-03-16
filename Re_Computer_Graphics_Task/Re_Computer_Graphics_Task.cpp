@@ -14,8 +14,15 @@ float phi = 0;
 float theta = 0;
 float fov = 1.04719755;
 
+float shininessValue;
+
 double lastX = 0;
 double lastY = 0;
+
+vec3 lightPos = vec3(10, 20, 10);
+vec3 lightColor = vec3(1, 1, 1);
+vec3 diffuseColorVec;
+vec3 cameraPos;
 
 void render(GLFWwindow* window);
 
@@ -55,6 +62,7 @@ void render(GLFWwindow* window) {
 	glUseProgram(program);
 
 	setCameraPosition(width, height);
+	sendShadingInfo();
 
 	glBindVertexArray(vertexArrayID);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexID);

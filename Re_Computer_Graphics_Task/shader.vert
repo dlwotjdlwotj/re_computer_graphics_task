@@ -6,6 +6,7 @@ layout(location=2) in vec3 in_Normal;
 
 out vec2 texCoord;
 out vec3 normal;
+out vec3 worldCoord;
 
 uniform mat4 viewMat = mat4(1,0,0,0,0,1,0,0,0,0,1,0,0,0,-3,1);
 uniform mat4 projMat = mat4(1.299038, 0, 0, 0, 0, 1.732051, 0, 0, 0, 0, -1.002002, -1.0, 0, 0, -0.2002, 0);
@@ -25,6 +26,10 @@ vec4 getWorldPos(vec4 p4){
 	return projMat*viewMat*modelMat*p4;
 }
 
+vec4 getWorldPosByModelMat(vec4 p4){
+	return modelMat*p4;
+}
+
 vec3 getNormal(){
 	return (modelMat * vec4(in_Normal, 0.0)).xyz;
 }
@@ -33,4 +38,5 @@ void main(void) {
 	gl_Position = getWorldPos(vec4(in_Position, 1.0));
 	texCoord = in_TexCoord;
 	normal = getNormal();
+	worldCoord = getWorldPosByModelMat(vec4(in_Position, 1.0)).xyz;
 }

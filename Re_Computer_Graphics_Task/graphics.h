@@ -21,6 +21,8 @@ extern GLuint normalVB;
 extern float transformAngle;
 extern float rotationAngle;
 
+extern float shininessValue;
+
 extern float cameraDistance;
 extern float phi;
 extern float theta;
@@ -28,6 +30,11 @@ extern float fov;
 
 extern double lastX;
 extern double lastY;
+
+extern vec3 lightPos;
+extern vec3 lightColor;
+extern vec3 diffuseColorVec;
+extern vec3 cameraPos;
 
 void setVertex() {
 	// vertex buffer 설정
@@ -56,7 +63,7 @@ void setVertex() {
 }
 
 void setJ3AVertex() {
-	loadJ3A("C:/program1/Re_Computer_Graphics_Task/Re_Computer_Graphics_Task/banana.j3a");
+	loadJ3A("C:/program1/Re_Computer_Graphics_Task/Re_Computer_Graphics_Task/medievalHouse.j3a");
 
 	glGenBuffers(1, &triangleVB);
 	glBindBuffer(GL_ARRAY_BUFFER, triangleVB);
@@ -128,7 +135,7 @@ void setCameraPosition(int width, int height) {
 	vec4 cameraPosHom = vec4(0, 0, cameraDistance, 0); // 카메라 거리
 	cameraPosHom = rotate(mat4(1.0f), theta, vec3(0, 1, 0)) * cameraPosHom; // y축 회전
 	cameraPosHom = rotate(mat4(1.0f), phi, vec3(1, 0, 0)) * cameraPosHom; // x축 회전
-	vec3 cameraPos = vec3(cameraPosHom);
+	cameraPos = vec3(cameraPosHom);
 
 	// view space
 	mat4 viewMat = lookAt(cameraPos, vec3(0.0f), vec3(0, 1, 0));
@@ -140,6 +147,17 @@ void setCameraPosition(int width, int height) {
 	mat4 projMat = perspective(fov, aspect, 0.01f, 100.0f);
 	GLuint projMatLocation = glGetUniformLocation(program, "projMat");
 	glUniformMatrix4fv(projMatLocation, 1, GL_FALSE, &projMat[0][0]);
+}
+
+void sendShadingInfo() {
+	diffuseColorVec = diffuseColor[0];
+	shininessValue = shininess[0];
+
+	glUniform3fv(glGetUniformLocation(program, "lightPos"), 1, &lightPos[0]);
+	glUniform3fv(glGetUniformLocation(program, "lightColor"), 1, &lightColor[0]);
+	glUniform3fv(glGetUniformLocation(program, "color"), 1, &diffuseColorVec[0]);
+	glUniform1f(glGetUniformLocation(program, "shininess"), shininessValue);
+	glUniform3fv(glGetUniformLocation(program, "cameraPos"), 1, &cameraPos[0]);
 }
 
 void mouseButtonCB(GLFWwindow* window, int button, int action, int mods) { //클릭 확인
