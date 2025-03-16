@@ -5,6 +5,7 @@ GLuint triangleVB = 0;
 GLuint vertexArrayID = 0;
 GLuint indexID = 0;
 GLuint normalVB = 0;
+GLuint textureID;
 
 float transformAngle = 0.0f;
 float rotationAngle = 0.0f;
@@ -36,9 +37,12 @@ int main(void) {
 
 	getMouseInput(window); // 마우스 입력
 
+	stbi_set_flip_vertically_on_load(true); // 뒤집힘 해결
+
 	program = loadShaders("shader.vert", "shader.frag");
 
 	setJ3AVertex();
+	textureLoading();
 	setNormalVertex();
 
 	glEnable(GL_DEPTH_TEST); // depth test

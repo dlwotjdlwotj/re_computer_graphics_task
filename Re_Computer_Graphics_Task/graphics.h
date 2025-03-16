@@ -2,6 +2,7 @@
 
 #define GLM_ENABLE_EXPERIMENTAL
 #define GLEW_STATIC
+#define STB_IMAGE_IMPLEMENTATION
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/gtc/type_ptr.hpp>
@@ -9,6 +10,7 @@
 #include <glm/gtx/transform.hpp>
 #include "shader.h"
 #include "j3a.hpp"
+#include "stb_image.h"
 
 using namespace glm;
 
@@ -17,6 +19,7 @@ extern GLuint triangleVB;
 extern GLuint vertexArrayID;
 extern GLuint indexID;
 extern GLuint normalVB;
+extern GLuint textureID;
 
 extern float transformAngle;
 extern float rotationAngle;
@@ -62,8 +65,23 @@ void setVertex() {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * 9, indices, GL_STATIC_DRAW);
 }
 
+void textureLoading() {
+	int w = 0, h = 0, n = 0;
+	void* buf = stbi_load(("C:/program1/Re_Computer_Graphics_Task/Re_Computer_Graphics_Task/" + diffuseMap[0]).c_str(), &w, &h, &n, 4);
+
+	glGenTextures(1, &textureID);
+	glBindTexture(GL_TEXTURE_2D, textureID);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_SRGB8_ALPHA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, buf);
+	stbi_image_free(buf);
+}
+
 void setJ3AVertex() {
-	loadJ3A("C:/program1/Re_Computer_Graphics_Task/Re_Computer_Graphics_Task/medievalHouse.j3a");
+	loadJ3A("C:/program1/Re_Computer_Graphics_Task/Re_Computer_Graphics_Task/dwarf.j3a");
 
 	glGenBuffers(1, &triangleVB);
 	glBindBuffer(GL_ARRAY_BUFFER, triangleVB);
