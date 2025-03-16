@@ -15,6 +15,7 @@ void main(void)
 	vec3 L = normalize(lightPos - worldCoord);
 	vec3 N = normalize(normal);
 	vec3 diffuse = color * lightColor * max(0, dot(L, N));
+ 	vec3 gamma = pow(diffuse, vec3(0.4545));
 	
-	out_Color = vec4(diffuse, 1.0);
+	out_Color = vec4(gamma, 1.0);
 }
