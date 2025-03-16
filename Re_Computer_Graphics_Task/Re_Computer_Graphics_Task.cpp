@@ -6,6 +6,7 @@ GLuint vertexArrayID = 0;
 GLuint indexID = 0;
 GLuint normalVB = 0;
 GLuint textureID;
+GLuint bumpTexID;
 
 float transformAngle = 0.0f;
 float rotationAngle = 0.0f;
@@ -25,6 +26,8 @@ vec3 lightColor = vec3(1, 1, 1);
 vec3 diffuseColorVec;
 vec3 cameraPos;
 
+int w = 0, h = 0, n = 0;
+
 void render(GLFWwindow* window);
 
 int main(void) {
@@ -41,9 +44,13 @@ int main(void) {
 
 	program = loadShaders("shader.vert", "shader.frag");
 
+	int w = 0, h = 0, n = 0;
+	void* buf = NULL;
 	setJ3AVertex();
-	textureLoading();
+	textureLoading(w, h, n, buf);
+	bumpMapping(w, h, n, buf);
 	setNormalVertex();
+	setTexVertex();
 
 	glEnable(GL_DEPTH_TEST); // depth test
 
@@ -55,6 +62,7 @@ int main(void) {
 	glfwDestroyWindow(window);
 	glfwTerminate();
 }
+
 void render(GLFWwindow* window) {
 	int width, height;
 	glfwGetFramebufferSize(window, &width, &height);

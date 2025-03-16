@@ -20,6 +20,7 @@ extern GLuint vertexArrayID;
 extern GLuint indexID;
 extern GLuint normalVB;
 extern GLuint textureID;
+extern GLuint bumpTexID;
 
 extern float transformAngle;
 extern float rotationAngle;
@@ -65,9 +66,8 @@ void setVertex() {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * 9, indices, GL_STATIC_DRAW);
 }
 
-void textureLoading() {
-	int w = 0, h = 0, n = 0;
-	void* buf = stbi_load(("C:/program1/Re_Computer_Graphics_Task/Re_Computer_Graphics_Task/" + diffuseMap[0]).c_str(), &w, &h, &n, 4);
+void textureLoading(int w, int h, int n, void* buf) {
+	buf = stbi_load(("C:/program1/Re_Computer_Graphics_Task/Re_Computer_Graphics_Task/" + diffuseMap[0]).c_str(), &w, &h, &n, 4);
 
 	glGenTextures(1, &textureID);
 	glBindTexture(GL_TEXTURE_2D, textureID);
@@ -77,6 +77,21 @@ void textureLoading() {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_SRGB8_ALPHA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, buf);
+	stbi_image_free(buf);
+}
+
+void bumpMapping(int w, int h, int n, void* buf){
+	buf = stbi_load(("C:/program1/Re_Computer_Graphics_Task/Re_Computer_Graphics_Task/" + bumpMap[0]).c_str(), &w, &h, &n, 4);
+
+	glGenTextures(1, &bumpTexID);
+	glBindTexture(GL_TEXTURE_2D, bumpTexID);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_SRGB8_ALPHA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, buf);
+	glGenerateMipmap(GL_TEXTURE_2D);
 	stbi_image_free(buf);
 }
 
@@ -105,6 +120,15 @@ void setNormalVertex() {
 	glBufferData(GL_ARRAY_BUFFER, nVertices[0] * sizeof(vec3), normals[0], GL_STATIC_DRAW);
 	glEnableVertexAttribArray(2); // normal = 2
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);
+}
+
+void setTexVertex() {
+	GLuint texCoordVB = 0;
+	glGenBuffers(1, &texCoordVB);
+	glBindBuffer(GL_ARRAY_BUFFER, texCoordVB);
+	glBufferData(GL_ARRAY_BUFFER, nVertices[0] * sizeof(vec2), texCoords[0], GL_STATIC_DRAW);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
 }
 
 void resize() {
@@ -176,6 +200,10 @@ void sendShadingInfo() {
 	glUniform3fv(glGetUniformLocation(program, "color"), 1, &diffuseColorVec[0]);
 	glUniform1f(glGetUniformLocation(program, "shininess"), shininessValue);
 	glUniform3fv(glGetUniformLocation(program, "cameraPos"), 1, &cameraPos[0]);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, textureID);
+	glUniform1i(glGetUniformLocation(program, "diffTex"), 0);
 }
 
 void mouseButtonCB(GLFWwindow* window, int button, int action, int mods) { //클릭 확인
