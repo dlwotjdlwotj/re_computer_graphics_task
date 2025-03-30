@@ -49,7 +49,7 @@ void setVertex() {
 		0 , -0.7 , 0 ,
 		0.7 , -0.7 , 0 };
 	glGenBuffers(1, &triangleVB); // vertex buffer 생성
-	glBindBuffer(GL_ARRAY_BUFFER, triangleVB); 
+	glBindBuffer(GL_ARRAY_BUFFER, triangleVB);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 18, v, GL_STATIC_DRAW); // trianbleVB에 데이터 복사
 
 	glGenVertexArrays(1, &vertexArrayID);
@@ -80,7 +80,7 @@ void textureLoading(int w, int h, int n, void* buf) {
 	stbi_image_free(buf);
 }
 
-void bumpMapping(int w, int h, int n, void* buf){
+void bumpMapping(int w, int h, int n, void* buf) {
 	buf = stbi_load(("C:/program1/Re_Computer_Graphics_Task/Re_Computer_Graphics_Task/" + bumpMap[0]).c_str(), &w, &h, &n, 4);
 
 	glGenTextures(1, &bumpTexID);
@@ -161,7 +161,7 @@ void transform() {
 		0, 0, 1);
 
 	mat3 finalMat = scaleMat * rotMat;
-	
+
 	GLuint loc = glGetUniformLocation(program, "transform");
 	glUniformMatrix3fv(loc, 1, 0, glm::value_ptr(finalMat));
 }
@@ -185,7 +185,7 @@ void setCameraPosition(int width, int height) {
 	glUniformMatrix4fv(viewMatLocation, 1, GL_FALSE, &viewMat[0][0]);
 
 	// projection
-	float aspect = (float) width / (float) height;
+	float aspect = (float)width / (float)height;
 	mat4 projMat = perspective(fov, aspect, 0.01f, 100.0f);
 	GLuint projMatLocation = glGetUniformLocation(program, "projMat");
 	glUniformMatrix4fv(projMatLocation, 1, GL_FALSE, &projMat[0][0]);
@@ -204,6 +204,10 @@ void sendShadingInfo() {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, textureID);
 	glUniform1i(glGetUniformLocation(program, "diffTex"), 0);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, bumpTexID);
+	glUniform1i(glGetUniformLocation(program, "bumpTex"), 0);
 }
 
 void mouseButtonCB(GLFWwindow* window, int button, int action, int mods) { //클릭 확인

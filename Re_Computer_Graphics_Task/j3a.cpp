@@ -122,4 +122,3 @@ bool loadJ3A( const char* fn ) {
 	ifs.close();
 	return true;
 }
-

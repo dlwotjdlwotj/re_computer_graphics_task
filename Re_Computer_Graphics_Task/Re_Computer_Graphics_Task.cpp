@@ -58,7 +58,7 @@ int main(void) {
 		render(window);
 		glfwPollEvents();
 	}
-		
+
 	glfwDestroyWindow(window);
 	glfwTerminate();
 }
